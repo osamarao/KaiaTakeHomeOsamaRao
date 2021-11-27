@@ -6,33 +6,35 @@ import com.example.kaiacasestudy.repositories.ExerciseDataLayer
 import com.example.kaiacasestudy.repositories.ExerciseRepository
 import com.example.kaiacasestudy.repositories.FavoritesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
-interface MainActivityUseCase {
-    fun exercises(): Flow<NetworkResult<List<ExerciseUseCase>>>
+interface ExerciseListFragmentUseCase {
+    fun exercises(): Flow<NetworkResult<List<ExerciseUseCaseModel>>>
 }
 
-class MainActivityUseCaseImpl @Inject constructor(
+class ExerciseListFragmentUseCaseImpl @Inject constructor(
     private val exerciseRepository: ExerciseRepository,
     private val favoritesRepository: FavoritesRepository,
-) : MainActivityUseCase {
-    override fun exercises(): Flow<NetworkResult<List<ExerciseUseCase>>> =
-        exerciseRepository.exercises.map { dataLayerExercise ->
+) : ExerciseListFragmentUseCase {
+    override fun exercises(): Flow<NetworkResult<List<ExerciseUseCaseModel>>> {
+        return exerciseRepository.exercises.combine(favoritesRepository.favorites())
+        { dataLayerExercise, favorites ->
             dataLayerExercise.mapIfSuccess { list ->
                 list.map { dataLayerExercise ->
-                    dataLayerExercise.toExerciseUseCase()
+                    dataLayerExercise.toExerciseUseCase(favorite = favorites.contains(dataLayerExercise.id))
                 }
             }
         }
+    }
 }
 
-data class ExerciseUseCase(
+data class ExerciseUseCaseModel(
     val id: Int,
     val name: String,
     val coverImageUrl: String,
     val favorite: Boolean,
 )
 
-fun ExerciseDataLayer.toExerciseUseCase(favorite: Boolean = false): ExerciseUseCase =
-    ExerciseUseCase(id, name, coverImageUrl, favorite)
+fun ExerciseDataLayer.toExerciseUseCase(favorite: Boolean = false): ExerciseUseCaseModel =
+    ExerciseUseCaseModel(id, name, coverImageUrl, favorite)

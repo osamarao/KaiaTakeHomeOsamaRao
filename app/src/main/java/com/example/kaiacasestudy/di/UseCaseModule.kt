@@ -1,7 +1,7 @@
 package com.example.kaiacasestudy.di
 
-import com.example.kaiacasestudy.usecase.MainActivityUseCase
-import com.example.kaiacasestudy.usecase.MainActivityUseCaseImpl
+import com.example.kaiacasestudy.usecase.ExerciseListFragmentUseCase
+import com.example.kaiacasestudy.usecase.ExerciseListFragmentUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 abstract class UseCaseModule {
 
     @Binds
-    abstract fun mainActivityUseCase(mainActivityUseCaseImpl: MainActivityUseCaseImpl): MainActivityUseCase
+    abstract fun exerciseListFragmentUseCase(mainActivityUseCaseImpl: ExerciseListFragmentUseCaseImpl): ExerciseListFragmentUseCase
 }
