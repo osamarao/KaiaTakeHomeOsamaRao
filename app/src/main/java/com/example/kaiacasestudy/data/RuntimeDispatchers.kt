@@ -1,4 +1,4 @@
-package com.example.kaiacasestudy.network
+package com.example.kaiacasestudy.data
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

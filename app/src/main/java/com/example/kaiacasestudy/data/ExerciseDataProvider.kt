@@ -1,4 +1,4 @@
-package com.example.kaiacasestudy.network
+package com.example.kaiacasestudy.data
 
 import com.example.kaiacasestudy.models.Exercise
 import kotlinx.coroutines.flow.Flow
