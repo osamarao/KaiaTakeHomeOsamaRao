@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.kaiacasestudy.ExerciseDetailActivity
 import com.example.kaiacasestudy.R
 import com.example.kaiacasestudy.data.NetworkResult
 import com.example.kaiacasestudy.databinding.ExerciseListFragmentBinding
@@ -41,7 +42,9 @@ class ExerciseListFragment : Hilt_ExerciseListFragment(R.layout.exercise_list_fr
                     }
                     is NetworkResult.Success -> {
                         Log.d(TAG, it.data.toString())
-                        adapter = ExerciseListRecyclerViewAdapter(it.data) { isFavorited, id ->
+                        adapter = ExerciseListRecyclerViewAdapter(
+                            exerciseList = it.data
+                        ) { isFavorited, id ->
                             if (isFavorited) {
                                 viewModel.addFavorite(id)
                             } else {
@@ -52,6 +55,11 @@ class ExerciseListFragment : Hilt_ExerciseListFragment(R.layout.exercise_list_fr
                     }
                 }
             }.launchIn(lifecycleScope)
+
+            startTraining.setOnClickListener {
+                requireActivity().startActivity(ExerciseDetailActivity.newIntent(requireContext()))
+            }
+
         }
     }
 }

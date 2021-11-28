@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kaiacasestudy.data.NetworkResult
 import com.example.kaiacasestudy.data.mapIfSuccess
-import com.example.kaiacasestudy.usecase.ExerciseListFragmentUseCase
+import com.example.kaiacasestudy.usecase.ExerciseListUseCase
 import com.example.kaiacasestudy.usecase.ExerciseUseCaseModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExerciseListViewModel @Inject constructor(private val useCase: ExerciseListFragmentUseCase) : ViewModel() {
+class ExerciseListViewModel @Inject constructor(private val useCase: ExerciseListUseCase) : ViewModel() {
 
     private val _exerciseList: MutableStateFlow<NetworkResult<List<ExerciseApplicationModel>>> =
         MutableStateFlow(NetworkResult.Loading)
@@ -33,7 +33,8 @@ class ExerciseListViewModel @Inject constructor(private val useCase: ExerciseLis
 
     fun addFavorite(id: Int) {
         if (_exerciseList.value is NetworkResult.Success) {
-            val favorites = (_exerciseList.value as NetworkResult.Success).data.filter { it.favorite }.map { it.id }.toMutableList()
+            val favorites =
+                (_exerciseList.value as NetworkResult.Success).data.filter { it.favorite }.map { it.id }.toMutableList()
             favorites.add(id)
             viewModelScope.launch {
                 useCase.updateFavorites(favorites)
@@ -43,7 +44,8 @@ class ExerciseListViewModel @Inject constructor(private val useCase: ExerciseLis
 
     fun removeFavorite(id: Int) {
         if (_exerciseList.value is NetworkResult.Success) {
-            val favorites = (_exerciseList.value as NetworkResult.Success).data.filter { it.favorite }.map { it.id }.toMutableList()
+            val favorites =
+                (_exerciseList.value as NetworkResult.Success).data.filter { it.favorite }.map { it.id }.toMutableList()
             favorites.removeAt(favorites.indexOf(id))
             viewModelScope.launch {
                 useCase.updateFavorites(favorites)

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KaiaCaseStudy</string>
+    <string name="unfavorite">Un-favorite Exercise</string>
+    <string name="favorite">Favorite Exercise</string>
 </resources>

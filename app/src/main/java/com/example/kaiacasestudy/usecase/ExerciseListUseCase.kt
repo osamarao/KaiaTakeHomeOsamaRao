@@ -9,15 +9,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
-interface ExerciseListFragmentUseCase {
+interface ExerciseListUseCase {
     fun exercises(): Flow<NetworkResult<List<ExerciseUseCaseModel>>>
-    suspend fun updateFavorites(idList : List<Int>)
+    fun exercise(id: Int): Flow<NetworkResult<ExerciseUseCaseModel>>
+    suspend fun updateFavorites(idList: List<Int>)
 }
 
-class ExerciseListFragmentUseCaseImpl @Inject constructor(
+class ExerciseListUseCaseImpl @Inject constructor(
     private val exerciseRepository: ExerciseRepository,
     private val favoritesRepository: FavoritesRepository,
-) : ExerciseListFragmentUseCase {
+) : ExerciseListUseCase {
     override fun exercises(): Flow<NetworkResult<List<ExerciseUseCaseModel>>> =
         exerciseRepository.exercises.combine(favoritesRepository.favorites())
         { dataLayerExercise, favorites ->
@@ -31,6 +32,22 @@ class ExerciseListFragmentUseCaseImpl @Inject constructor(
                 list.map { dataLayerExercise ->
                     dataLayerExercise.toExerciseUseCase(favorite = favoritesList.contains(dataLayerExercise.id))
                 }
+            }
+        }
+
+    override fun exercise(id: Int): Flow<NetworkResult<ExerciseUseCaseModel>> =
+        exerciseRepository.exercises.combine(favoritesRepository.favorites())
+        { dataLayerExercise, favorites ->
+            val favoritesList = if (favorites is NetworkResult.Success) {
+                favorites.data
+            } else {
+                emptyList()
+            }
+
+            dataLayerExercise.mapIfSuccess { list ->
+                list.filter { it.id == id }.map { dataLayerExercise ->
+                    dataLayerExercise.toExerciseUseCase(favorite = favoritesList.contains(dataLayerExercise.id))
+                }.first()
             }
         }
 
