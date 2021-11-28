@@ -8,13 +8,16 @@ import com.bumptech.glide.Glide
 import com.example.kaiacasestudy.R
 import com.example.kaiacasestudy.databinding.ListItemExerciseBinding
 
-class ExerciseListRecyclerViewAdapter(private val exerciseList: List<ExerciseApplicationModel>) :
+class ExerciseListRecyclerViewAdapter(
+    private val exerciseList: List<ExerciseApplicationModel>,
+    private val onCheckChanged: (Boolean, Int) -> Unit,
+) :
     RecyclerView.Adapter<ExerciseListItemViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseListItemViewHolder {
         return ExerciseListItemViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item_exercise, parent, false))
+            .inflate(R.layout.list_item_exercise, parent, false), onCheckChanged)
     }
 
     override fun onBindViewHolder(holder: ExerciseListItemViewHolder, position: Int) {
@@ -26,7 +29,10 @@ class ExerciseListRecyclerViewAdapter(private val exerciseList: List<ExerciseApp
 }
 
 
-class ExerciseListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ExerciseListItemViewHolder(
+    itemView: View,
+    private val onCheckChanged: (Boolean, Int) -> Unit,
+) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(item: ExerciseApplicationModel) {
         val binding = ListItemExerciseBinding.bind(itemView)
@@ -34,6 +40,10 @@ class ExerciseListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
             name.text = item.name
             favorite.isChecked = item.favorite
             Glide.with(root.context).load(item.coverImageUrl).into(exerciseImage);
+            favorite.setOnCheckedChangeListener(null)
+            favorite.setOnCheckedChangeListener { _, isChecked ->
+                onCheckChanged(isChecked, item.id)
+            }
         }
 
     }

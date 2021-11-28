@@ -1,7 +1,7 @@
 package com.example.kaiacasestudy.di
 
-import com.example.kaiacasestudy.network.KaiaDispatchers
-import com.example.kaiacasestudy.network.RuntimeDispatchers
+import com.example.kaiacasestudy.data.KaiaDispatchers
+import com.example.kaiacasestudy.data.RuntimeDispatchers
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

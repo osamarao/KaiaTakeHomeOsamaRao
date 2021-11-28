@@ -1,7 +1,7 @@
 package com.example.kaiacasestudy.repositories
 
 import com.example.kaiacasestudy.models.Exercise
-import com.example.kaiacasestudy.network.NetworkResult
+import com.example.kaiacasestudy.data.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface ExerciseRepository {

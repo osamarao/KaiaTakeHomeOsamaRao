@@ -1,8 +1,8 @@
 package com.example.kaiacasestudy.di
 
-import com.example.kaiacasestudy.network.ExerciseService
-import com.example.kaiacasestudy.network.OkHttpClientFactory
-import com.example.kaiacasestudy.network.RetrofitFactory
+import com.example.kaiacasestudy.data.ExerciseService
+import com.example.kaiacasestudy.data.OkHttpClientFactory
+import com.example.kaiacasestudy.data.RetrofitFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

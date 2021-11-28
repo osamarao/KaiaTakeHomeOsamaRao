@@ -1,4 +1,4 @@
-package com.example.kaiacasestudy.network
+package com.example.kaiacasestudy.data
 
 sealed class NetworkResult<out T> {
     object Loading : NetworkResult<Nothing>()

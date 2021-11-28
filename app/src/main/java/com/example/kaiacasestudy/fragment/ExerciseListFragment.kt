@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.kaiacasestudy.R
+import com.example.kaiacasestudy.data.NetworkResult
 import com.example.kaiacasestudy.databinding.ExerciseListFragmentBinding
-import com.example.kaiacasestudy.network.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,7 +41,13 @@ class ExerciseListFragment : Hilt_ExerciseListFragment(R.layout.exercise_list_fr
                     }
                     is NetworkResult.Success -> {
                         Log.d(TAG, it.data.toString())
-                        adapter = ExerciseListRecyclerViewAdapter(it.data)
+                        adapter = ExerciseListRecyclerViewAdapter(it.data) { isFavorited, id ->
+                            if (isFavorited) {
+                                viewModel.addFavorite(id)
+                            } else {
+                                viewModel.removeFavorite(id)
+                            }
+                        }
                         list.adapter = adapter
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.kaiacasestudy.network
+package com.example.kaiacasestudy.data
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
